@@ -15,11 +15,9 @@ phases:
     commands:
       - npm run build
   post_build:
-    commands:
-      - echo "Uploading to S3..."
-      - aws s3 sync build/ s3://$S3_BUCKET --delete
-      - echo "Invalidating CloudFront..."
-      - aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_ID --paths "/*"
+  commands:
+    - aws s3 sync build/ s3://$WebsiteBucket --delete
+    - aws cloudfront create-invalidation --distribution-id $CloudFrontDistributionId --paths "/*"
 
 artifacts:
   base-directory: build
