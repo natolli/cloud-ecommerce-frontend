@@ -1,32 +1,60 @@
-// src/pages/Checkout.js
 import React from "react";
 import { useCart } from "../context/CartContext";
-import { useAuth } from "../context/AuthContext";
 import styled from "styled-components";
+import { CognitoUserPool } from "amazon-cognito-identity-js";
+
+// Replace with your actual Cognito values
+const poolData = {
+  UserPoolId: "us-east-1_HhhUqRFK4", // ← Replace this
+  ClientId: "4cslra82t15ci6ue61gsiju33p", // ← Replace this
+};
+
+const userPool = new CognitoUserPool(poolData);
 
 const Checkout = () => {
   const { cart, clearCart } = useCart();
-  const { user } = useAuth();
 
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
-  const placeOrder = async () => {
-    const res = await fetch("/api/orders", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        userId: user.id,
-        items: cart,
-        total,
-      }),
-    });
+  const placeOrder = () => {
+    const cognitoUser = userPool.getCurrentUser();
 
-    if (res.ok) {
-      alert("Order placed successfully!");
-      clearCart();
-    } else {
-      alert("Failed to place order");
+    if (!cognitoUser) {
+      alert("User not logged in");
+      return;
     }
+
+    cognitoUser.getSession(async (err, session) => {
+      if (err || !session.isValid()) {
+        alert("Session expired. Please log in again.");
+        return;
+      }
+
+      const idToken = session.getIdToken().getJwtToken();
+
+      const res = await fetch(
+        "https://ko19zy4goa.execute-api.us-east-1.amazonaws.com/prod/order",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: idToken,
+          },
+          body: JSON.stringify({
+            items: cart,
+            totalAmount: total,
+          }),
+        }
+      );
+
+      if (res.ok) {
+        alert("Order placed successfully!");
+        clearCart();
+      } else {
+        const error = await res.json();
+        alert("Failed to place order: " + (error.message || "Unknown error"));
+      }
+    });
   };
 
   return (

@@ -5,12 +5,12 @@ import styled from "styled-components";
 
 const Login = () => {
   const { login } = useAuth();
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    login(email, password);
+    login(username, password);
   };
 
   return (
@@ -18,11 +18,11 @@ const Login = () => {
       <Form onSubmit={handleSubmit}>
         <h2>Login</h2>
         <Input
-          type="email"
-          placeholder="Email"
-          value={email}
+          type="text"
+          placeholder="Username"
+          value={username}
           required
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => setUsername(e.target.value)}
         />
         <Input
           type="password"

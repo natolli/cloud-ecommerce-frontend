@@ -6,8 +6,8 @@ import {
 } from "amazon-cognito-identity-js";
 
 const poolData = {
-  UserPoolId: "us-east-1_example123", // TODO: Replace with your actual Cognito User Pool ID
-  ClientId: "exampleclientid1234567890", // TODO: Replace with your actual App Client ID
+  UserPoolId: "us-east-1_HhhUqRFK4",
+  ClientId: "4cslra82t15ci6ue61gsiju33p",
 };
 
 const userPool = new CognitoUserPool(poolData);
