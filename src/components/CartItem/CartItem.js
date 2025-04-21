@@ -21,7 +21,9 @@ const CartItem = ({ item }) => {
         <Name>{item.name}</Name>
         <Quantity>Qty: {item.quantity}</Quantity>
         <Price>${(item.price * item.quantity).toFixed(2)}</Price>
-        <RemoveBtn onClick={() => removeFromCart(item.id)}>Remove</RemoveBtn>
+        <RemoveBtn onClick={() => removeFromCart(item.productId)}>
+          Remove
+        </RemoveBtn>
       </Info>
     </Item>
   );

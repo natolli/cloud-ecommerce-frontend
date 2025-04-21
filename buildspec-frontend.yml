@@ -1,23 +1,22 @@
 version: 0.2
 
-env:
-  variables:
-    S3_BUCKET: $WebsiteBucket
-    CLOUDFRONT_ID: $CloudFrontDistributionId
-
 phases:
   install:
     runtime-versions:
       nodejs: 18
     commands:
       - npm ci
+
   build:
     commands:
       - npm run build
+
   post_build:
-  commands:
-    - aws s3 sync build/ s3://$WebsiteBucket --delete
-    - aws cloudfront create-invalidation --distribution-id $CloudFrontDistributionId --paths "/*"
+    commands:
+      - echo "Uploading to S3..."
+      - aws s3 sync build/ s3://$WebsiteBucket --delete
+      - echo "Invalidating CloudFront..."
+      - aws cloudfront create-invalidation --distribution-id $CloudFrontDistributionId --paths "/*"
 
 artifacts:
   base-directory: build
