@@ -1,22 +1,18 @@
 // src/pages/ProductDetail.js
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useCart } from "../context/CartContext";
+import { useLocation } from "react-router-dom";
 
 const ProductDetail = () => {
-  const { id } = useParams();
+  const location = useLocation();
+  const pro = location.state?.product;
   const { addToCart } = useCart();
   const [product, setProduct] = useState(null);
 
   useEffect(() => {
-    const fetchProduct = async () => {
-      const res = await fetch(`/api/products/${id}`);
-      const data = await res.json();
-      setProduct(data);
-    };
-    fetchProduct();
-  }, [id]);
+    setProduct(pro);
+  }, []);
 
   if (!product) return <p>Loading...</p>;
 
@@ -24,9 +20,10 @@ const ProductDetail = () => {
     <Container>
       <Image src={product.image} alt={product.name} />
       <Details>
-        <h2>{product.name}</h2>
+        <h1>{product.name}</h1>
+        <h2>{product.category}</h2>
         <p>{product.description}</p>
-        <Price>${product.price.toFixed(2)}</Price>
+        <Price>${product.price}</Price>
         <Button onClick={() => addToCart(product)}>Add to Cart</Button>
       </Details>
     </Container>

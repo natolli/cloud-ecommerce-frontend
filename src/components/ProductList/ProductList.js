@@ -10,7 +10,9 @@ const ProductList = () => {
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const res = await fetch("/api/products"); // Adjust endpoint as needed
+      const res = await fetch(
+        "https://ko19zy4goa.execute-api.us-east-1.amazonaws.com/prod/products"
+      ); // Adjust endpoint as needed
       const data = await res.json();
       setProducts(data);
     };

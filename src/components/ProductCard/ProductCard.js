@@ -13,10 +13,12 @@ const ProductCard = ({ product }) => {
       <Image
         src={product.image}
         alt={product.name}
-        onClick={() => navigate(`/product/${product.id}`)}
+        onClick={() =>
+          navigate(`/product/${product.id}`, { state: { product } })
+        }
       />
       <Title>{product.name}</Title>
-      <Price>${product.price.toFixed(2)}</Price>
+      <Price>${product.price}</Price>
       <Button onClick={() => addToCart(product)}>Add to Cart</Button>
     </Card>
   );
