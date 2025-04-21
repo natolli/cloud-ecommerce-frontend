@@ -14,24 +14,28 @@ const Cart = () => {
   return (
     <Container>
       <h2>Your Cart</h2>
-      {cart.length === 0 ? (
-        <p>Your cart is empty.</p>
-      ) : (
+      {cart && (
         <>
-          {cart.map((item) => (
-            <CartItem key={item.id} item={item} />
-          ))}
-          <Summary>
-            <p>
-              <strong>Total:</strong> ${total.toFixed(2)}
-            </p>
-            <Button onClick={() => navigate("/checkout")}>
-              Proceed to Checkout
-            </Button>
-            <Button secondary onClick={clearCart}>
-              Clear Cart
-            </Button>
-          </Summary>
+          {cart.length === 0 ? (
+            <p>Your cart is empty.</p>
+          ) : (
+            <>
+              {cart.map((item) => (
+                <CartItem key={item.id} item={item} />
+              ))}
+              <Summary>
+                <p>
+                  <strong>Total:</strong> ${total.toFixed(2)}
+                </p>
+                <Button onClick={() => navigate("/checkout")}>
+                  Proceed to Checkout
+                </Button>
+                <Button secondary onClick={clearCart}>
+                  Clear Cart
+                </Button>
+              </Summary>
+            </>
+          )}
         </>
       )}
     </Container>
