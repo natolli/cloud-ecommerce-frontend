@@ -9,6 +9,7 @@ import ProductDetail from "./pages/ProductDetail";
 import Header from "./components/Header/Header";
 import ProtectedRoute from "./components/ProtectedRoute";
 
+//App
 const App = () => {
   return (
     <>
